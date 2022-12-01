@@ -15,8 +15,11 @@ def vote_skew(election_df, year, state) -> int:
     skew = (election[election['party_simplified']=='DEMOCRAT']['candidatevotes'].tolist()[0]-election[election['party_simplified']=='REPUBLICAN']['candidatevotes'].tolist()[0])/election[election['party_simplified']=='REPUBLICAN']['totalvotes'].tolist()[0]
     return skew
 
-def unemployment_state(unemployment):
-    pass
+def unemployment_by_state(unemployment, states, state, year):
+    unemployment = unemployment_data.iloc[(year-1976)*12:(year-1975)*12]
+    index = states.index(state)+1
+    unemployment = unemployment.iloc[:, index]
+    return unemployment
 
 states=["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut",
             "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas",
@@ -51,8 +54,6 @@ elif 2010<=year and year<2019:
 else:
     income = income_2019
 
-unemployment = unemployment_data.iloc[(year-1976)*12:(year-1975)*12]
-
-print(unemployment)
+print(unemployment_by_state(unemployment, states, 'Maryland', year))
 # X = [[] for state in states]
 # X = np.array(X)
