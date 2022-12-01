@@ -1,11 +1,5 @@
-
-"Table S1. Median Household Income by State: 1969, 1979, 1989, and 1999"
-
-(Income in current and 1999 CPI-U-RS adjusted dollars)
-
-,,1989,,1979,,1969,
-State,1999,Current dollars,1999 dollars,Current dollars,1999 dollars,Current dollars,1999 dollars
-United States,"$41,994","$30,056","$39,213","$16,841","$36,029","$8,486","$33,249"
+Place,1999,Current dollars 1989,1999 dollars,Current dollars 1979,1999 dollars,Current dollars 1969,1999 dollars
+United States,"$41,994 ","$30,056 ","$39,213 ","$16,841 ","$36,029 ","$8,486 ","$33,249 "
 Alabama,"34,135","23,597","30,786","13,669","29,243","6,419","25,151"
 Alaska,"51,571","41,408","54,023","25,414","54,369","11,817","46,301"
 Arizona,"40,558","27,540","35,930","16,448","35,188","8,199","32,125"
@@ -57,10 +51,11 @@ Washington,"45,776","31,183","40,683","18,367","39,293","9,125","35,753"
 West Virginia,"29,696","20,795","27,130","14,564","31,158","6,487","25,417"
 Wisconsin,"43,791","29,442","38,412","17,680","37,824","8,997","35,251"
 Wyoming,"37,892","27,096","35,351","19,994","42,774","8,035","31,482"
-,
-"SOURCE:  1970, 1980, 1990, and 2000 Censuses of Population
-Income Surveys Branch/HHES Division
-U.S. Census Bureau
-U.S. Department of Commerce
-Washington, D.C.  20233-8500
-(301)763-3242"
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
