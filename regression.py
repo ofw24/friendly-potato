@@ -66,3 +66,6 @@ X = [[float(vote_skew(prev_election, year, state)),
         float(unemployment_by_state(unemployment_data, states, state, year)),
         float((prev_income[states.index(state)+1]).replace(',',''))] for state in states]
 X = np.array(X)
+
+if __name__ == "__main__":
+    print(X)
