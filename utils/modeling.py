@@ -26,24 +26,26 @@ def multinomial_logit(X: np.array, A: np.array, B: np.array) -> np.array:
     return A + np.matmul(X.T, B)
 
 # Posterior distributions
-years = [i for i in range(1982, 1983)]
+years = [i for i in range(1981, 2019)]
 years = [i for i in years if not i in [1993, 1994, 1995, 1996]]
 X = [get_X(year) for year in years]
 Y = []
 for year in years:
+    v=[]
     for state in STATES_ABBR:
         vec = count_party_votes(global_election_data, year, state.upper())
-        # Y.append(vec[0]/(vec[0]+vec[1]))
-        #print(vec[0])
-
-# print(count_party_votes(global_election_data, 2000, 'MD'))
+        if sum(vec)!=0:
+            v.append(vec[0]/(vec[0]+vec[1]))
+            print(vec[0]/(vec[0]+vec[1]), state, year)
+        else:
+            v.append(2)
+    Y.append(v)
+# print(np.matmul(X[0].T, Y[0]))
 
 XTX = [np.matmul(x.T, x) for x in X]
 XTy = [np.matmul(x.T, y) for x, y in zip(X, Y)]
+beta_ols = [np.matmul(np.linalg.inv(xtx), xty) for xtx, xty in zip(XTX, XTy)]
 
-# beta_ols = [np.matmul(np.inverse(xtx), xty) for xtx, xty in zip(XTX, XTy)]
-
-# X=get_X(2000)
 
 if __name__ == "__main__":
     ...

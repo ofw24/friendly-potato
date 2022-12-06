@@ -8,7 +8,7 @@ from data_constants import STATES
 import sys
 sys.path.append('../utils')
 
-def vote_skew(election_df: pd.DataFrame, year: int, state: str) -> int:
+def vote_skew(election_df: pd.DataFrame, year: int, state: str) -> float:
     """
     Finds the skew of election results within a given state
     1  -> all votes for democrats within a state
@@ -30,7 +30,7 @@ def unemployment_by_state(unemployment: pd.DataFrame, states: list, state: str, 
     return np.mean(unemployment)
 
 def get_X(year: int) -> np.array:
-    print(year)
+    print('getting X for ', year)
     # read in data
     election = pd.read_csv("./dataverse_files/1976-2020-senate.csv", encoding="latin1")
     income_historical = pd.read_csv("./dataverse_files/income/59 to 89 household.csv")

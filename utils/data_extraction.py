@@ -49,7 +49,7 @@ def count_party_votes(df: pd.DataFrame, year: int, state: str) -> tuple:
     vec[2]=lib_votes
     vec[3]=other_votes
     
-    print(vec, state)
+    #print(vec, state)
     return vec
 
 def convert_irrelevant_parties(df: pd.DataFrame) -> pd.DataFrame:
