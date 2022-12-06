@@ -16,22 +16,41 @@ def load_data(filepath: str) -> pd.DataFrame:
         usecols=["year", "state_po", "candidatevotes", "totalvotes", "party_detailed", "party_simplified"])
     return df
 
+global_election_data = load_data(filepath)
+
 def count_party_occurrences(party: str) -> float:
     """
     Get number of occurrences of a specific partyy
     """
     return sum([1 for p in df["party_detailed"] if p == party])
 
-def count_party_votes(df: pd.DataFrame, party: str, state: str, year: int) -> tuple:
+def count_party_votes(df: pd.DataFrame, year: int, state: str) -> tuple:
     """
     Get the number of votes a certain party recieved in a given election
     Returns a tuple of (party votes, total_votes)
     """
     global filepath
     df = load_data(filepath)
+        
+    rep_votes, dem_votes, lib_votes, other_votes = 0, 0, 0, 0
+    vec=[0, 0, 0, 0]
     for _, row in df.iterrows():
-        if row["party_simplified"] == party.upper() and row["state_po"] == state.upper() and row["year"] == int(year):
-            return row["candidatevotes"], row["totalvotes"]
+        if row["year"] == int(year):
+            if row["party_simplified"].upper() == "DEMOCRAT" and row['state_po']==state:
+                dem_votes += row["candidatevotes"]
+            if row["party_simplified"].upper() == "REPUBLICAN" and row['state_po']==state:
+                rep_votes += row["candidatevotes"]
+            if row["party_simplified"].upper() == "LIBERTARIAN" and row['state_po']==state:
+                lib_votes += row["candidatevotes"]
+            elif row['party_simplified']=='OTHER' and row['state_po']==state:
+                other_votes += row["candidatevotes"]
+    vec[0]=dem_votes
+    vec[1]=rep_votes
+    vec[2]=lib_votes
+    vec[3]=other_votes
+    
+    print(vec, state)
+    return vec
 
 def convert_irrelevant_parties(df: pd.DataFrame) -> pd.DataFrame:
     """
