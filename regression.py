@@ -68,4 +68,4 @@ X = [[float(vote_skew(prev_election, year, state)),
 covariate_matrix = np.array(X)
 
 if __name__ == "__main__":
-    print(covariate_matrix)
+    print(covariate_matrix.size)
