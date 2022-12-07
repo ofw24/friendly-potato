@@ -72,7 +72,7 @@ def get_X(year: int) -> np.array:
         covariate_matrix = np.array(X)       
 
     print("Done!")
-    return covariate_matrix
+    return np.array(covariate_matrix)
 
 #get_X(2010)
 if __name__ == "__main__":
