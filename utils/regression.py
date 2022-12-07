@@ -30,12 +30,15 @@ def unemployment_by_state(unemployment: pd.DataFrame, states: list, state: str, 
     return np.mean(unemployment)
 
 def get_X(year: int) -> np.array:
-    print('getting X for ', year)
-    # read in data
-    election = pd.read_csv("./dataverse_files/1976-2020-senate.csv", encoding="latin1")
+    """
+    Get covariate matrix for a given year
+    """
+    print(f"Getting covariate matrix for the year {year}... ", end="")
+    # Read in data
+    election          = pd.read_csv("./dataverse_files/1976-2020-senate.csv", encoding="latin1")
     income_historical = pd.read_csv("./dataverse_files/income/59 to 89 household.csv")
-    income_2010 = pd.read_csv("./dataverse_files/income/2010.csv")
-    income_2019 = pd.read_csv("./dataverse_files/income/2019.csv")
+    income_2010       = pd.read_csv("./dataverse_files/income/2010.csv")
+    income_2019       = pd.read_csv("./dataverse_files/income/2019.csv")
     unemployment_data = pd.read_csv("./dataverse_files/unemployment/all_unemployment.csv")
 
     # get relevant info for the year in question
@@ -45,6 +48,7 @@ def get_X(year: int) -> np.array:
 
     prev_skew = [vote_skew(prev_election, year, state) for state in STATES]
 
+    # Fill in empty entries for annual income
     if 1976 <= year and year < 1979:
         prev_income = income_historical["Current dollars 1969"]
     elif 1979 <= year and year < 1989:
@@ -56,9 +60,7 @@ def get_X(year: int) -> np.array:
     else:
         prev_income = income_2019
 
-    # print(int(income_2010['Alabama'].tolist()[0].replace(',', '')))
-
-    if year<2010:
+    if year < 2010:
         X = [[float(vote_skew(prev_election, year, state)),
                 float(unemployment_by_state(unemployment_data, STATES, state, year)),
                 float((prev_income[STATES.index(state)+1]).replace(",", ""))] for state in STATES]
@@ -69,8 +71,9 @@ def get_X(year: int) -> np.array:
                 float(prev_income[state].tolist()[0].replace(',', ''))] for state in STATES]
         covariate_matrix = np.array(X)       
 
+    print("Done!")
     return covariate_matrix
 
 #get_X(2010)
-# if __name__ == "__main__":
-#     print(get_X(2001))
+if __name__ == "__main__":
+    get_X(2001)

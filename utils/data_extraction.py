@@ -33,45 +33,21 @@ def count_party_votes(df: pd.DataFrame, year: int, state: str) -> tuple:
     df = load_data(filepath)
         
     rep_votes, dem_votes, lib_votes, other_votes = 0, 0, 0, 0
-    vec=[0, 0, 0, 0]
+    vec = [0, 0, 0, 0]
     for _, row in df.iterrows():
-        if row["year"] == int(year):
-            if row["party_simplified"].upper() == "DEMOCRAT" and row['state_po']==state:
-                dem_votes += row["candidatevotes"]
-            if row["party_simplified"].upper() == "REPUBLICAN" and row['state_po']==state:
-                rep_votes += row["candidatevotes"]
-            if row["party_simplified"].upper() == "LIBERTARIAN" and row['state_po']==state:
-                lib_votes += row["candidatevotes"]
-            elif row['party_simplified']=='OTHER' and row['state_po']==state:
-                other_votes += row["candidatevotes"]
-    vec[0]=dem_votes
-    vec[1]=rep_votes
-    vec[2]=lib_votes
-    vec[3]=other_votes
+        if row["year"] == int(year) and row['state_po'] == state:
+            if row["party_simplified"].upper() == "DEMOCRAT":    dem_votes += row["candidatevotes"]
+            if row["party_simplified"].upper() == "REPUBLICAN":  rep_votes += row["candidatevotes"]
+            if row["party_simplified"].upper() == "LIBERTARIAN": lib_votes += row["candidatevotes"]
+            if row['party_simplified'].upper() == "OTHER":       other_votes += row["candidatevotes"]
+    vec[0] += dem_votes
+    vec[1] += rep_votes
+    vec[2] += lib_votes
+    vec[3] += other_votes
     
     #print(vec, state)
     return vec
 
-def convert_irrelevant_parties(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    
-    """
-# def party_votes_df(df: pd.DataFrame) -> pd.DataFrame:
-#     """
-#     Create DataFrame containing votes received by each party, per state, per year
-#     """ 
-#     res = {"State": STATES_ABBR, "Republican": [], "Democrat": [], "Independent": [], "Other": []}
-#     _, R, D, I, O = (r for r in res.keys())
-#     for state in res["State"]:
-#         for yr in [1976+i for i in range(2021-1976+1)]:
-#             p_votes, t_votes = count_party_votes(df, "DEMOCRAT", str(state), yr)
-#             res["Democrat"].append(p_votes)
-#             p_votes, t_votes = count_party_votes(df, "REPUBLICAN", state, yr)
-#             res["Republican"].append(p_votes)
-#             p_votes, t_votes = count_party_votes(df, "LIBERTARIAN", state, yr)
-#             res["Libertarian"].append(p_votes)
-#             p_votes, t_votes = count_party_votes(df, "OTHER", state, yr)
-#             res["Other"].append(p_votes)
 
 def get_all_parties(df: pd.DataFrame) -> list:
     """
