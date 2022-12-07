@@ -59,7 +59,7 @@ if __name__ == "__main__":
     # print(observed)
     years = [i for i in range(1981, 2019) if not i in [1993, 1994, 1995, 1996]]
     X = [get_X(year) for year in years]
-    # beta_ols = ols_regressors(X, Y) # ERROR IS HERE
+    beta_ols = ols_regressors(X, Y) # ERROR IS HERE
     dg = pd.DataFrame(Y, columns=STATES)
     print(dg)
     # print(beta_ols)
