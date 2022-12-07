@@ -32,12 +32,16 @@ def pickle_me_timbers():
                 v.append(2)
         Y.append(v)
     pickle.dump(Y, open("observed.pkl", "wb"))
+    return 
 
+def ols_regressors(covariates: np.array, observations: np.array) -> np.array:
+    """
+    Get Ordinary-Least Squares (OLS) Estimate of the matrix of regressors
+    """
     # Ordinary-Least Squares estimate of the regression vector
-    XTX = [np.matmul(x.T, x) for x in X]
-    XTy = [np.matmul(x.T, y) for x, y in zip(X, Y)]
+    XTX = [np.matmul(x.T, x) for x in covariates]
+    XTy = [np.matmul(x.T, y) for x, y in zip(covariates, observations)]
     beta_ols = [np.matmul(np.linalg.inv(xtx), xty) for xtx, xty in zip(XTX, XTy)]
-    print(f"Function {beta_ols}")
     return beta_ols
 
 
@@ -45,12 +49,9 @@ if __name__ == "__main__":
     # beta_OLS = pickle_me_timbers()
     import pandas as pd
     observed = pickle.load(open("observed.pkl", "rb")) # observed == Y
-    years = [i for i in range(1981, 2019)]
-    years = [i for i in years if not i in [1993, 1994, 1995, 1996]]
+    years = [i for i in range(1981, 2019) if not i in [1993, 1994, 1995, 1996]]
     X = [get_X(year) for year in years]
-    XTX = [np.matmul(x.T, x) for x in X]
-    XTy = [np.matmul(x.T, y) for x, y in zip(X, observed)]
-    beta_ols = [np.matmul(np.linalg.inv(xtx), xty) for xtx, xty in zip(XTX, XTy)]
-    print(f"Observed {beta_ols}")
+    beta_ols = ols_regressors(X, observed)
     dg = pd.DataFrame(observed, columns=STATES)
     print(dg)
+    print(beta_ols)
