@@ -15,7 +15,7 @@ def impute_votes(df) -> None:
     ...
     return
 
-def data_dump():
+def pickle_me_timbers():
     # Posterior distributions
     years = [i for i in range(1981, 2019)]
     years = [i for i in years if not i in [1993, 1994, 1995, 1996]]
@@ -42,7 +42,7 @@ def data_dump():
 
 
 if __name__ == "__main__":
-    # beta_OLS = data_dump()
+    # beta_OLS = pickle_me_timbers()
     import pandas as pd
     observed = pickle.load(open("observed.pkl", "rb")) # observed == Y
     years = [i for i in range(1981, 2019)]
