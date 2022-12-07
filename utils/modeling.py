@@ -34,8 +34,6 @@ def pickle_me_timbers():
                 except IndexError:
                     v.append(1)
         Y.append(v)
-    # Clear pickle file before dumping data into it
-    pickle.dump([], open("observed.pkl", "wb"))
     pickle.dump(Y, open("observed.pkl", "wb"))
     return np.array(X)
 
@@ -43,8 +41,11 @@ def ols_regressors(covariates: np.array, observations: np.array) -> np.array:
     """
     Get Ordinary-Least Squares (OLS) Estimate of the vector of regressors
     """
+    # print(covariates)
+    # print(observations)
     # Ordinary-Least Squares estimate of the regression vector
-    XTX = [np.matmul(x.T, x) for x in covariates]
+    XTX = np.array([np.matmul(x.T, x) for x in covariates])
+    print(XTX.T[0].size) # XTX[0] is 9 x 102 
     XTy = [np.matmul(x.T, y) for x, y in zip(covariates, observations)]
     beta_ols = [np.matmul(np.linalg.inv(xtx), xty) for xtx, xty in zip(XTX, XTy)]
     return np.array(beta_ols)
@@ -52,10 +53,13 @@ def ols_regressors(covariates: np.array, observations: np.array) -> np.array:
 if __name__ == "__main__":
     import pandas as pd
     X = pickle_me_timbers()
-    observed = pickle.load(open("observed.pkl", "rb")) # observed == Y
-    # years = [i for i in range(1981, 2019) if not i in [1993, 1994, 1995, 1996]]
-    # X = [get_X(year) for year in years]
-    beta_ols = ols_regressors(X, observed) # ERROR IS HERE
-    dg = pd.DataFrame(observed, columns=STATES)
+    # observed = pickle.load(open("observed.pkl", "rb")) # observed == Y
+    Y = np.array(pickle.load(open("./observed.pkl", "rb")), dtype="object") # Y is 34 x 50
+    # observed = Y
+    # print(observed)
+    years = [i for i in range(1981, 2019) if not i in [1993, 1994, 1995, 1996]]
+    X = [get_X(year) for year in years]
+    # beta_ols = ols_regressors(X, Y) # ERROR IS HERE
+    dg = pd.DataFrame(Y, columns=STATES)
     print(dg)
-    print(beta_ols)
+    # print(beta_ols)

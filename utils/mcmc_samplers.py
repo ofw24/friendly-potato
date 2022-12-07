@@ -55,7 +55,7 @@ if __name__ == "__main__":
     from modeling import ols_regressors
     years = [i for i in range(1981, 2019) if not i in [1993, 1994, 1995, 1996]]
     X = np.array([get_X(year) for year in years]) # X[0] is 50 x 3
-    Y = np.array(pickle.load(open("observed.pkl", "rb"))) # Y is 34 x 50
+    Y = np.array(pickle.load(open("observed.pkl", "rb")), dtype="object") # Y is 34 x 50
     beta_ols = ols_regressors(X, Y) # beta_ols is 34 x 3
     beta_post, gamma_post = beta_gibbs_sampling(1982, X, beta_ols, 5000, 1000)
 
