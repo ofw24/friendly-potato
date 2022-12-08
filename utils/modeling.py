@@ -30,9 +30,9 @@ def pickle_me_timbers() -> None:
                 print(f"DDR : {rat:0.8f} : {state} : {year}")
             else: # if missing data, impute
                 try:
-                    v.append((2,2,2,2))
+                    v.append((0.5,0.5,0.5,0.5))
                 except IndexError:
-                    v.append((2,2,2,2))
+                    v.append((0.5,0.5,0.5,0.5))
         Y.append(v)
     with open("observed.txt", "w") as outfile:
         for y in Y:
@@ -77,12 +77,13 @@ def hammer_and_pickle() -> None:
 if __name__ == "__main__":
     import pandas as pd
     # pickle_me_timbers()
-    Y = hammer_and_pickle()
-    observed = Y
-    years = [i for i in range(1982, 2019) if not i in [1993, 1994, 1995, 1996]]
-    X = [get_X(year) for year in years[::2]]
-    # print(Y)
-    beta_ols = ols_regressors(X, Y) # ERROR IS HERE
-    dg = pd.DataFrame(Y, columns=STATES)
-    # print(dg)
-    print(beta_ols)
+    Y = hammer_and_pickle() # len(Y) = 17 (years) // len(Y[0]) = 50 (states) // len(Y[0][0]) = 4 (parties) // len(Y[0][0][0]) = int
+    print(Y)
+    # observed = Y
+    # years = [i for i in range(1982, 2019) if not i in [1993, 1994, 1995, 1996]]
+    # X = [get_X(year) for year in years[::2]]
+    # # print(Y)
+    # beta_ols = ols_regressors(X, Y) # ERROR IS HERE
+    # dg = pd.DataFrame(Y, columns=STATES)
+    # # print(dg)
+    # print(beta_ols)

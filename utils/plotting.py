@@ -3,7 +3,6 @@ Script for plotting results
 """
 import pickle 
 import numpy as np
-from itertools import tee
 from regression import get_X
 import matplotlib.pyplot as plt
 from mcmc_samplers import beta_gibbs_sampling
@@ -16,12 +15,17 @@ if __name__ == "__main__":
     Y = hammer_and_pickle() # len(Y) = 17 (years) // len(Y[0]) = 50 (states) // len(Y[0][0]) = 4 (parties) // len(Y[0][0][0]) = int
     beta_ols = ols_regressors(X, Y) # len(beta_ols) = 17 // len(beta_ols[0]) = 3 // len(beta_ols[0][0]) = int
     # print(len(Y[0][0])) 
-    beta_post, gamma_post = beta_gibbs_sampling(1982, X, Y, beta_ols, 5000, 1000)
+    party = "democrat"
+    beta_post, gamma_post = beta_gibbs_sampling(1984, X, Y, beta_ols, party, 5000, 1000)
     mcmc_beta = np.array([
         np.mean([b[0] for b in beta_post]), np.mean([b[1] for b in beta_post]), np.mean([b[2] for b in beta_post])
         ])
     # print(f"b1: {beta1}\nb2: {beta2}\nb3: {beta3}")
-    mcmcY = np.matmul(X[0], mcmc_beta)
+    mcmcY = np.matmul(X[1], mcmc_beta)
+    Y0 = np.array([y[0] for y in Y[1]])
+    # print(Y0)
     # Plotting
     plt.figure(figsize=(8,6))
-    plt.plot(Y, mcmcY)
+    plt.scatter(Y0, mcmcY, c="r")
+    plt.xlabel("Observed"); plt.ylabel("Predicted")
+    plt.show()

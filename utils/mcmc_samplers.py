@@ -12,10 +12,15 @@ from regression import get_X
 from modeling import hammer_and_pickle
 from scipy.stats import multivariate_normal, gamma
 
-def beta_gibbs_sampling(year: int, covariates: np.array, observed: np.array, beta_ols: np.array, N: int, burn: int) -> np.array:
+def beta_gibbs_sampling(
+    year: int, covariates: np.array, observed: np.array, beta_ols: np.array, party: str,  N: int, burn: int
+    ) -> np.array:
     """
     Gibbs sampling algorithm to get estimate of the regression coefficients
     """
+    # Transform party designation to slice
+    transform = {"DEMOCRAT": 0, "REPUBLICAN": 1, "LIBERTARIAN": 2, "OTHER": 3}
+    port = transform[party.upper()]
     # Global constants
     time = year % 1981
     Y = observed # FIGURE OUT FILE PATHS
@@ -44,7 +49,7 @@ def beta_gibbs_sampling(year: int, covariates: np.array, observed: np.array, bet
         # For gamma
         new_ssr_beta = np.matmul( (Y - np.matmul(X, vbeta)).T, (Y - np.matmul(X, vbeta)) )
         prior_gamma_loc, prior_gamma_scale = (nu0 + n)/2, 2/(nu0*var0 + new_ssr_beta)
-        prior_gamma = gamma(a=prior_gamma_loc, scale=prior_gamma_scale).rvs()[0][0]
+        prior_gamma = gamma(a=prior_gamma_loc, scale=prior_gamma_scale).rvs()[port][0]
         # If we're past the burn-in period, append realizations of the parameters to posterior arrays
         if t >= burn:
             # print(f"Beta estimate : {vbeta}")
@@ -60,11 +65,7 @@ if __name__ == "__main__":
     Y = hammer_and_pickle() # len(Y) = 17 (years) // len(Y[0]) = 50 (states) // len(Y[0][0]) = 4 (parties) // len(Y[0][0][0]) = int
     beta_ols = ols_regressors(X, Y) # len(beta_ols) = 17 // len(beta_ols[0]) = 3 // len(beta_ols[0][0]) = int
     # print(len(Y[0][0])) 
-    beta_post, gamma_post = beta_gibbs_sampling(1982, X, Y, beta_ols, 2000, 1000)
-    mcmcY = 1
-    # Plotting
-    plt.figure(figsize=(8,6))
-    plt.plot()
+    beta_post, gamma_post = beta_gibbs_sampling(1982, X, Y, beta_ols, "democrat", 2000, 1000)
 
 
 
