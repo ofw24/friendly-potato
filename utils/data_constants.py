@@ -16,3 +16,6 @@ STATES_ABBR = [
     "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO",  "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", 
     "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
     ]
+
+years = [i for i in range(1982, 2019)]
+CONST_YEARS = [i for i in years[::2] if not i in [1993, 1994, 1995, 1996]]
