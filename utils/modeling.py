@@ -50,10 +50,7 @@ def ols_regressors(covariates: np.array, observations: np.array) -> np.array:
     beta_ols = [np.matmul(np.linalg.inv(xtx), xty) for xtx, xty in zip(XTX, XTy)]
     return np.array(beta_ols)
 
-if __name__ == "__main__":
-    import pandas as pd
-    # pickle_me_timbers()
-    # observed = pickle.load(open("observed.pkl", "rb")) # observed == Y
+def hammer_and_pickle() -> None:
     Y = []
     # The jankiest way to load data you've ever seen
     with open("./observed.txt", "r") as infile:
@@ -75,6 +72,12 @@ if __name__ == "__main__":
                             even_dumber_year.append(float(a.rstrip(")]\n")))
                 year.append(even_dumber_year)
             Y.append(year)
+    return Y
+
+if __name__ == "__main__":
+    import pandas as pd
+    # pickle_me_timbers()
+    Y = hammer_and_pickle()
     observed = Y
     years = [i for i in range(1982, 2019) if not i in [1993, 1994, 1995, 1996]]
     X = [get_X(year) for year in years[::2]]
