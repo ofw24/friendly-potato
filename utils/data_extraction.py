@@ -44,8 +44,6 @@ def count_party_votes(df: pd.DataFrame, year: int, state: str) -> tuple:
     vec[1] += rep_votes
     vec[2] += lib_votes
     vec[3] += other_votes
-    
-    #print(vec, state)
     return vec
 
 
