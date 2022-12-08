@@ -72,7 +72,7 @@ def hammer_and_pickle() -> None:
                             even_dumber_year.append(float(a.rstrip(")]\n")))
                 year.append(even_dumber_year)
             Y.append(year)
-    return Y
+    return np.array(Y)
 
 if __name__ == "__main__":
     import pandas as pd
