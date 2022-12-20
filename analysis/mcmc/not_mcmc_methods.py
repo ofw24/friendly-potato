@@ -5,6 +5,12 @@ import numpy as np
 import pandas as pd
 from scipy.interpolate import UnivariateSpline
 
+def ale(df: pd.DataFrame, country: str) -> np.array:
+    """
+    Get actual life expectencies for a particular country
+    """
+    return np.array(df[df["country"] == country]["lifeExp"])
+
 def country_beta_ols(data: pd.DataFrame, country: str) -> np.array:
     """
     Get OLS estimate of linear regressors for a particular country for all years
@@ -38,6 +44,16 @@ def data_spline(actuals: np.array, predicted: np.array, order: int=3, knots: flo
     """
     residuals = np.absolute(actuals - predicted) # Y
     return UnivariateSpline(actuals, residuals, k=order, s=knots)
+
+def double_logistic(params: np.array, actual_life_exp: float) -> float:
+    """
+    Double logistic regression model
+    """
+    A1, A2 = 17.6, 0.125
+    d1, d2, d3, d4, k, z = params
+    first  = k / ( 1 + np.exp(-(A1*d2) * (actual_life_exp-d1-A2/d2)) )
+    second = d3*(z - k) / ( 1 + np.exp(-(A1*d4) * (actual_life_exp-A2*d4)) )
+    return -(first + second)
 
 if __name__ == "__main__":
     pass

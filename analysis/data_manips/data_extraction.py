@@ -3,6 +3,10 @@ Script for extracting and manipulating data
 """
 import pandas as pd
 
+def cont_2_color(continent: str) -> str:
+    transform = {"Africa": "r", "Americas": "b", "Asia": "g", "Europe": "m", "Oceania": "c"}
+    return transform[continent]
+
 def load_data(filename: str) -> pd.DataFrame:
     """
     Load data into a pd.DataFrame
