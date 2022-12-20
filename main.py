@@ -47,7 +47,7 @@ def main():
         gibbs_predicted = []
         for life_exp in actual:
             pred = double_logistic(gibbs_beta, life_exp) + life_exp + norm(0, (omega*spl(life_exp)**2)).rvs()
-            if np.absolute(pred - life_exp) / life_exp < uniform(0, 0.01).rvs():
+            if np.absolute(pred - life_exp) / life_exp < 0.5:
                 gibbs_predicted.append(pred)
             else:
                 gibbs_predicted.append( norm(loc=life_exp, scale=2**2).rvs() )
@@ -60,9 +60,9 @@ def main():
     plt.figure(figsize=(8,6))
     # plt.scatter(actuals, resids, c="k", label="Residuals")
     # plt.plot(actuals, spl(actuals), c="r", lw=1, label="Spline")
-    plt.scatter(actuals, actuals - all_predicted, color=continents)
+    plt.scatter(actuals, all_predicted, color=continents)
 
-    plt.xlabel("Actual Life Expectency"); plt.ylabel("Residual")
+    plt.xlabel("Actual Life Expectancy"); plt.ylabel("Predicted Life Expectancy")
     # Legend shenanigans
     conts = ["Africa", "Americas", "Asia", "Europe", "Oceania"]
     patches = [mpatches.Patch(color=cont_2_color(cont), label=f"{cont}") for cont in conts]

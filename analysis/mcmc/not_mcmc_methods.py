@@ -51,8 +51,8 @@ def double_logistic(params: np.array, actual_life_exp: float) -> float:
     """
     A1, A2 = 17.6, 0.125
     d1, d2, d3, d4, k, z = params
-    first  = k / ( 1 + np.exp(-(A1*d2) * (actual_life_exp-d1-A2/d2)) )
-    second = d3*(z - k) / ( 1 + np.exp(-(A1*d4) * (actual_life_exp-A2*d4)) )
+    first  = k / ( 1 + np.exp(-(A1*d2) * (actual_life_exp-d1-A2*d2)) )
+    second = (z - k) / ( 1 + np.exp(-(A1*d4/d3) * (actual_life_exp-A2*d4)) )
     return -(first + second)
 
 if __name__ == "__main__":
