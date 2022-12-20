@@ -14,17 +14,17 @@ def main():
     data = "gapminder.tsv.txt"
     rawdata = pd.read_csv(data, sep="\t")
     df = load_data(data)
-    cunt = "Germany"
+    count = "Germany"
     countries = df["country"].unique()
-    boils, _, _, _ = country_beta_ols(df, cunt)
-    actual = ale(df, cunt)
-    pred  = residuals(df, cunt)
+    boils, _, _, _ = country_beta_ols(df, count)
+    actual = ale(df, count)
+    pred  = residuals(df, count)
 
     # KEEP THIS FOR SPLINING
     actuals, resids = [], []
-    for cunt in countries:
-        actual = np.array(df[df["country"] == cunt]["lifeExp"]); actuals.append(actual)
-        resid = residuals(df, cunt); resids.append(resid)
+    for count in countries:
+        actual = np.array(df[df["country"] == count]["lifeExp"]); actuals.append(actual)
+        resid = residuals(df, count); resids.append(resid)
     actuals, resids = np.array(actuals).flatten(), np.array(resids).flatten()
     resids = np.array([x for _, x in sorted(zip(actuals, resids))]); actuals.sort() # Sorting to deal with spline shenanigans
     spl = data_spline(actuals, actuals-resids, order=1) # THIS CAN NEVER BE CHANGED
@@ -33,11 +33,11 @@ def main():
     # GIBBS SAMPLING
     all_predicted = []
     continents = []
-    for cunt in countries:
-        actual = ale(df, cunt)
-        continent = np.array(rawdata["continent"][rawdata["country"] == cunt])[0]
-        print(f"{cunt} is in {continent}")
-        res = gibbs_sampler(df, cunt, boils, 50, 10)
+    for count in countries:
+        actual = ale(df, count)
+        continent = np.array(rawdata["continent"][rawdata["country"] == count])[0]
+        print(f"{count} is in {continent}")
+        res = gibbs_sampler(df, count, boils, 50, 10)
         # Get averages for each parameter out of the gibbs sampler
         gibbs_beta = np.zeros(len(res[0]))
         for r in res:
