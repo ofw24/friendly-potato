@@ -3,13 +3,9 @@ Script for extracting and manipulating data
 """
 import numpy as np
 import pandas as pd
+from scipy.stats import linregress
 from scipy.interpolate import UnivariateSpline
-
-def ale(df: pd.DataFrame, country: str) -> np.array:
-    """
-    Get actual life expectencies for a particular country
-    """
-    return np.array(df[df["country"] == country]["lifeExp"])
+from analysis.data_manips.data_extraction import ale
 
 def country_beta_ols(data: pd.DataFrame, country: str) -> np.array:
     """
@@ -27,6 +23,18 @@ def ols_predicted_life_exps(data: pd.DataFrame, beta_ols: np.array, country: str
     """
     X = data[data["country"] == country].drop(["country", "lifeExp"], axis=1)
     return np.matmul(X, beta_ols)
+
+def linear_fit_params_life_exps(df: pd.DataFrame, country: str) -> tuple:
+    """
+    Fit linear regression to life expectancy data for a particular country
+    Returns a function f: R^1 -> R^1 and the correlation coefficient for the fit
+    """
+    year = ale(df, country, "year")
+    life_exp = ale(df, country)
+    res = linregress(year, life_exp)
+    # lambda x: x*res.slope + res.intercept
+    return res.slope, res.intercept, res.rvalue
+
 
 def residuals(data: pd.DataFrame, country: str) -> tuple:
     """
@@ -51,8 +59,8 @@ def double_logistic(params: np.array, actual_life_exp: float) -> float:
     """
     A1, A2 = 17.6, 0.125
     d1, d2, d3, d4, k, z = params
-    first  = k / ( 1 + np.exp(-(A1*d2) * (actual_life_exp-d1-A2*d2)) )
-    second = (z - k) / ( 1 + np.exp(-(A1*d4/d3) * (actual_life_exp-A2*d4)) )
+    first  = k / ( 1 + np.exp(-(A1*d2) * (actual_life_exp-d1-A2/d2)) )
+    second = (z - k) / ( 1 + np.exp(-(A1*d4) * (actual_life_exp-A2/d4)) )
     return -(first + second)
 
 if __name__ == "__main__":
