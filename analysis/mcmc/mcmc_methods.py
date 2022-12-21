@@ -28,7 +28,6 @@ def gibbs_sampler(data: pd.DataFrame, country: str, beta_ols: np.array, N: int, 
     aS, dS = np.array([15.77, 40.97, 0.21, 19.82, 2.93, 0.40]), np.array([15.77**2, 40.97**2, 0.21**2, 19.82**2, 2.93**2, 0.40**2])
     lbS, ubS = np.array([0, 0, 0, 0, 0, 0]), np.array([100, 100, 100, 100, 10, 1.15]) 
     prior_param_rvs = np.array([truncnorm(a=lb, b=ub, loc=a, scale=d).rvs() for a, d, lb, ub in zip(aS, dS, lbS, ubS)])
-    # prior_param_rvs = [b for b in beta_ols]
 
     # Initialize array to store results
     posterior_params = []
@@ -53,8 +52,6 @@ def gibbs_sampler(data: pd.DataFrame, country: str, beta_ols: np.array, N: int, 
                 new_variai.append(proposed_point)
             else:
                 new_variai.append(var)
-        # print(f"Prior      {prior_prob}")
-        # print(f"Posterior  {proposed_prob}")
         variai = []; variai = np.array(new_variai)
         testing = acceptance_ratio
 

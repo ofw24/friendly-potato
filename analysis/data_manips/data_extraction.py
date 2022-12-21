@@ -84,7 +84,7 @@ def load_slurm(data: str, filename: str) -> np.array:
 
 if __name__ == "__main__":
     data = "./raw_data/gapminder.tsv.txt"
-    output = "./raw_data/slurm_10481503.out"
+    output = "./raw_data/slurm-10481503.out"
     # count = "Afghanistan"
     # le, leg = grab_life_exp_gain(df, count)
     # print(le)

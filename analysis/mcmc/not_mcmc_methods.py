@@ -32,9 +32,7 @@ def linear_fit_params_life_exps(df: pd.DataFrame, country: str) -> tuple:
     year = ale(df, country, "year")
     life_exp = ale(df, country)
     res = linregress(year, life_exp)
-    # lambda x: x*res.slope + res.intercept
     return res.slope, res.intercept, res.rvalue
-
 
 def residuals(data: pd.DataFrame, country: str) -> tuple:
     """
@@ -69,9 +67,6 @@ def double_logistic_function(params: np.array) -> float:
     """
     A1, A2 = 4.4, 0.5
     d1, d2, d3, d4, k, z = params
-    print(f"d1 : {d1}\nd2 : {d2}\nd3 : {d3}\nd4 : {d4}\nk  : {k}\nz  : {z}")
-    # d1, d2, d4 = np.log(d1), np.log(d2), np.log(d4)
-    # print(f"log(d1) : {d1}\nlog(d2) : {d2}\nd3      : {d3}\nlog(d4) : {d4}\nk       : {k}\nz       : {z}")
     su = sum([d1, d2, d3, d4])
     f = lambda life_exp: k / ( 1 + np.exp( -(2*np.log(9)/d1) * (life_exp-su+0.5*d1) ) )
     s = lambda life_exp: (z - k) / ( 1 + np.exp( -(2*np.log(9)/d3) * (life_exp-d4-0.5*d3) ) )
