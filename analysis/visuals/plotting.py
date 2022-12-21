@@ -34,5 +34,17 @@ def funky_legend(ax) -> None:
     ax.legend(handles=patches)
     return 
 
+def decline_paramters(function: callable) -> None:
+    """
+    Function for visualization of decline parameters
+    """
+    import numpy as np
+    import matplotlib.pyplot as plt
+    #
+    plt.figure()
+    X = np.linspace(20, 80, 1000); Y = function(X)
+    plt.plot(X, Y)
+    plt.show()
+
 if __name__ == "__main__":
     pass

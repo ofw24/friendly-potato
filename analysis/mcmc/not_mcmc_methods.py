@@ -57,11 +57,25 @@ def double_logistic(params: np.array, actual_life_exp: float) -> float:
     """
     Double logistic regression model
     """
-    A1, A2 = 17.6, 0.125
+    A1, A2 = 4.4, 0.5
     d1, d2, d3, d4, k, z = params
-    first  = k / ( 1 + np.exp(-(A1*d2) * (actual_life_exp-d1-A2/d2)) )
-    second = (z - k) / ( 1 + np.exp(-(A1*d4) * (actual_life_exp-A2/d4)) )
+    first  = k / ( 1 + np.exp(-(A1/d2) * (actual_life_exp-d1-A2/d2)) )
+    second = (z - k) / ( 1 + np.exp(-(A1/d4) * (actual_life_exp-A2/d4)) )
     return -(first + second)
+
+def double_logistic_function(params: np.array) -> float:
+    """
+    Double logistic regression model function
+    """
+    A1, A2 = 4.4, 0.5
+    d1, d2, d3, d4, k, z = params
+    print(f"d1 : {d1}\nd2 : {d2}\nd3 : {d3}\nd4 : {d4}\nk  : {k}\nz  : {z}")
+    # d1, d2, d4 = np.log(d1), np.log(d2), np.log(d4)
+    # print(f"log(d1) : {d1}\nlog(d2) : {d2}\nd3      : {d3}\nlog(d4) : {d4}\nk       : {k}\nz       : {z}")
+    su = sum([d1, d2, d3, d4])
+    f = lambda life_exp: k / ( 1 + np.exp( -(2*np.log(9)/d1) * (life_exp-su+0.5*d1) ) )
+    s = lambda life_exp: (z - k) / ( 1 + np.exp( -(2*np.log(9)/d3) * (life_exp-d4-0.5*d3) ) )
+    return lambda a: -(f(a) + s(a))
 
 if __name__ == "__main__":
     pass

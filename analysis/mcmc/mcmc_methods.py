@@ -25,7 +25,7 @@ def gibbs_sampler(data: pd.DataFrame, country: str, beta_ols: np.array, N: int, 
     # Initialize prior variances
     rate_params = np.array([15.6**2, 23.5**2, 14.5**2, 14.7**2, 3.5**2, 0.6**2])
     variai = np.array([invgamma(a=nu0/2, scale=rate).rvs() for rate in rate_params]) # Variances for all of the 6 parameters
-    aS, dS = np.array([15.77, 40.97, 0.21, 19.82, 2.93, 0.40]), np.array([15.77**2, 40.97**2, (1+0.21)**2, 19.82**2, 2.93**2, (1+0.40)**2])
+    aS, dS = np.array([15.77, 40.97, 0.21, 19.82, 2.93, 0.40]), np.array([15.77**2, 40.97**2, 0.21**2, 19.82**2, 2.93**2, 0.40**2])
     lbS, ubS = np.array([0, 0, 0, 0, 0, 0]), np.array([100, 100, 100, 100, 10, 1.15]) 
     prior_param_rvs = np.array([truncnorm(a=lb, b=ub, loc=a, scale=d).rvs() for a, d, lb, ub in zip(aS, dS, lbS, ubS)])
     # prior_param_rvs = [b for b in beta_ols]
@@ -76,7 +76,7 @@ def gibbs_sampler(data: pd.DataFrame, country: str, beta_ols: np.array, N: int, 
         if t > burn:
             posterior_params.append(prior_param_rvs)
 
-    print(f"{u} vs. {min(np.abs(acceptance_ratio))} vs {min(np.abs(acceptance_ratio))}")
+    print(f"{u} vs. {min(np.abs(acceptance_ratio), 1)} vs {min(np.abs(acceptance_ratio), 1)}")
     return np.array(posterior_params)
 
 if __name__ == "__main__":
